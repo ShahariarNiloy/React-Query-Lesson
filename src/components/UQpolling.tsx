@@ -6,21 +6,12 @@ const fetchSuperHeroes = () => {
   return axios.get("http://localhost:4001/superheroes");
 };
 
-const onSuccess = (data: any) => {
-  console.log("On Success Message", data);
-};
-const onError = (error: any) => {
-  console.log("On Error Message", error);
-};
-
-function UseQuery() {
+function UQpolling() {
   const { isLoading, data, isError, error } = useQuery(
-    "super-heroes-use-query",
+    "super-heroes-polling",
     fetchSuperHeroes,
     {
-      onSuccess, //!! if the query is success then this callback will called if not then onError will be triggered
-      onError,
-      staleTime: 8000, //!! Keep the query into fresh state for a given time period. While query is in fresh state there will be no network call even if revisit the component.
+      refetchInterval: 2000, //!! refetch the query on this time limit. this query will refetch after each 2 second.
     }
   );
 
@@ -34,7 +25,7 @@ function UseQuery() {
   }
   return (
     <>
-      <h2>Use Query</h2>
+      <h2>Polling</h2>
       <div>
         {data?.data?.map((hero: any) => {
           return <div key={hero?.id}>{hero?.name}</div>;
@@ -44,4 +35,4 @@ function UseQuery() {
   );
 }
 
-export default UseQuery;
+export default UQpolling;
